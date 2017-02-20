@@ -25,39 +25,48 @@ class RemoveJobEvent
     {
         $this->app = $app;
 
+        $this->plugin = $app['orm.em']
+                ->getRepository('Eccube\Entity\Plugin')
+                ->findOneBy(array('code' => 'RemoveJob'));
     }
 
     public function onRenderEntry(TemplateEvent $event)
     {
+        if(is_null($this->plugin))
+            return;
+        
         $search = "{% block javascript %}";
         $tag = <<< EOT
 <script>$(function(){ $("#top_box__job").remove();});</script>\n
 EOT;
         $source = str_replace($search, $search . $tag, $event->getSource());
         $event->setSource($source);
-
     }
 
     public function onRenderEntryConfirm(TemplateEvent $event)
     {
+        if(is_null($this->plugin))
+            return;
+        
         $script = <<< EOT
 {% block javascript %}
 <script>$(function(){ $("#confirm_box__job").remove();});</script>\n
 {% endblock javascript %}
 EOT;
         $event->setSource($event->getSource() . $script);
-
     }
 
     public function onRenderCustomerEdit(TemplateEvent $event)
     {
+        if(is_null($this->plugin))
+            return;
+        
         $search = "{% block javascript %}";
         $tag = <<< EOT
 <script>$(function(){ $("#detail_box__job").remove();});</script>\n
 EOT;
         $source = str_replace($search, $search . $tag, $event->getSource());
         $event->setSource($source);
-
     }
 
 }
