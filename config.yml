@@ -1,0 +1,6 @@
+name: '職業削除プラグイン for EC-CUBE3'
+code: RemoveJob
+version: 1.0.0
+event: RemoveJobEvent
+service:
+    - RemoveJobServiceProvider
